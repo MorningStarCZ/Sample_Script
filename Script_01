@@ -1,0 +1,32 @@
+ //создаем объект FileSystemObject
+    var FileSysObj = WScript.CreateObject("Scripting.FileSystemObject");
+    //объявляем нужные нам переменные
+    var nRow = 1, num=1;
+    var txt = '';
+    //открываем файл my.txt в той же папке, параметр 1 для чтения файла
+    var myText = FileSysObj.OpenTextFile('my.txt', 1 ); 
+    //как и раньше создаем объект для работы с Excel
+    var Excel = WScript.CreateObject("Excel.Application");
+    //добавляем книгу в Excel
+    Excel.WorkBooks.Add;
+    //циклом считываем строки из файла, пока они не закончатся
+    // и записываем их в наш Excel документ
+    while (!myText.AtEndOfStream) { 
+        //считываем строку
+        txt = myText.ReadLine();
+        //нумеруем наши строки в Excel
+        Excel.Cells(nRow, 1).Value = num;
+        //выставляем ширину вторго столбца
+        Excel.Columns(2).ColumnWidth = 15;
+        //записываем данные в ячейку
+        Excel.Cells(nRow, 2).Value = txt;
+        //увеличиваем переменные на 1
+        nRow++;
+        num++;
+    }
+    //закрываем файл
+    myText.Close();  
+    //делаем активным наш Excel документ
+    Excel.Visible = true;
+    //выходим из скрипта
+    WScript.Quit();
